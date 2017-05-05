@@ -1,1 +1,1 @@
-var app = angular.module('P2Player', []);
+var app = angular.module('P2Play', []);
