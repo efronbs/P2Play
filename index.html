@@ -8,8 +8,10 @@
 
 <body ng-app="P2Play">
   <div ng-controller="MainController">
-    <div ng-repeat="song in songs" class="card">
-      <queued-song info="song">
+    <div class="card-holder">
+      <div ng-repeat="song in songs">
+        <queued-song info="song" class="card">
+      </div>
     </div>
   </div>
   <div id="player"></div>
