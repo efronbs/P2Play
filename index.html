@@ -10,45 +10,12 @@
 
 <body ng-app="P2Play">
 
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Make</th>
-        <th>Model</th>
-        <th>Color</th>
-        <th>Year</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td class="filterable-cell">Ford</td>
-        <td class="filterable-cell">Escort</td>
-        <td class="filterable-cell">Blue</td>
-        <td class="filterable-cell">2000</td>
-    </tr>
-    <tr>
-        <td class="filterable-cell">Ford</td>
-        <td class="filterable-cell">Escort</td>
-        <td class="filterable-cell">Blue</td>
-        <td class="filterable-cell">2000</td>
-    </tr>
-            <tr>
-        <td class="filterable-cell">Ford</td>
-        <td class="filterable-cell">Escort</td>
-        <td class="filterable-cell">Blue</td>
-        <td class="filterable-cell">2000</td>
-    </tr>
-     <tr>
-        <td class="filterable-cell">Ford</td>
-        <td class="filterable-cell">Escort</td>
-        <td class="filterable-cell">Blue</td>
-        <td class="filterable-cell">2000</td>
-    </tr>
-    </tbody>
 
   <div ng-controller="MainController">
-    <div ng-repeat="song in songs">
-      <queued-song info="song">
+    <div class="card-holder">
+      <div ng-repeat="song in songs">
+        <queued-song info="song" class="card">
+      </div>
     </div>
   </div>
   <div id="player"></div>
