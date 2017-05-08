@@ -11,8 +11,9 @@ var player;
 
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
-    height: '390',
-    width: '640',
+    height: '360',
+    width: '480',
+    playerVars: { 'controls': 0, 'showinfo': 0, 'autohide': 1 },
     videoId: 'M7lc1UVf-VE',
     events: {'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange}
   });
@@ -54,4 +55,8 @@ function startVideo() {
 
 function pauseVideo() {
   player.pauseVideo();
+}
+
+function playOrPauseClick() {
+    
 }
