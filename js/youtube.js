@@ -61,7 +61,22 @@ function playOrPauseClick() {
     
 }
 
-function getSearchResults(searchKey) {
+function getSearchResults() {
+      return dispatcher => {
+        return new Promise((resolve, reject) => {
+          this.getResultsfromYTAPI()
+            .then(response => {
+              const res = response;
+                dispatcher({ res });
+                resolve({ res });
+              });
+            });
+      };
+    // return null;
+  }
+}
+
+function getResultsfromYTAPI(searchKey) {
   return fetch('http://ishank.wlan.rose-hulman.edu:8888/search/' + searchKey,
     {
       method: 'GET',
