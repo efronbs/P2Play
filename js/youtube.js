@@ -8,14 +8,22 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // 3. This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
 var player;
+var isPlaying;
 
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
     height: '360',
     width: '480',
-    playerVars: { 'controls': 0, 'showinfo': 0, 'autohide': 1 },
+    playerVars: {
+      'controls': 0,
+      'showinfo': 0,
+      'autohide': 1
+    },
     videoId: 'M7lc1UVf-VE',
-    events: {'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange}
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
   });
 }
 
@@ -23,12 +31,12 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady(event) {
   // bind events
   var playButton = document.getElementById('play-button');
-  playButton.addEventListener('click', function() {
+  playButton.addEventListener('click', function () {
     player.playVideo();
   });
 
   var pauseButton = document.getElementById('pause-button');
-  pauseButton.addEventListener('click', function() {
+  pauseButton.addEventListener('click', function () {
     player.pauseVideo();
   });
 }
@@ -58,30 +66,42 @@ function pauseVideo() {
 }
 
 function playOrPauseClick() {
-    
+
 }
 
 function getSearchResults() {
-      return dispatcher => {
-        return new Promise((resolve, reject) => {
-          this.getResultsfromYTAPI()
-            .then(response => {
-              const res = response;
-                dispatcher({ res });
-                resolve({ res });
-              });
-            });
-      };
-    // return null;
-  }
+  return dispatcher => {
+    return new Promise((resolve, reject) => {
+      this.getResultsfromYTAPI()
+        .then(response => {
+          const res = response;
+          dispatcher({
+            res
+          });
+          resolve({
+            res
+          });
+        });
+    });
+  };
+  // return null;
 }
 
 function getResultsfromYTAPI(searchKey) {
-  return fetch('http://ishank.wlan.rose-hulman.edu:8888/search/' + searchKey,
-    {
+  return fetch('http://ishank.wlan.rose-hulman.edu:8888/search/' + searchKey, {
       method: 'GET',
     })
     .then(response => {
       return response.json();
-  });
+    });
+}
+
+function clickPlayButton() {
+  document.getElementById("play-button").style.display = "none";
+  document.getElementById("pause-button").style.display = "block";
+}
+
+function clickPauseButton() {
+  document.getElementById("play-button").style.display = "block";
+  document.getElementById("pause-button").style.display = "none";
 }
