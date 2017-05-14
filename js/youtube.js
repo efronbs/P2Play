@@ -60,3 +60,13 @@ function pauseVideo() {
 function playOrPauseClick() {
     
 }
+
+function getSearchResults(searchKey) {
+  return fetch('http://ishank.wlan.rose-hulman.edu:8888/search/' + searchKey,
+    {
+      method: 'GET',
+    })
+    .then(response => {
+      return response.json();
+  });
+}
