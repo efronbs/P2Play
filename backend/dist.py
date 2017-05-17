@@ -1,15 +1,35 @@
 # Author: Ishank Tandon
 # Date: April 30, 2017
-
+import os
 import tornado.ioloop
+from pymongo import MongoClient
 import tornado.web
 import tornado.httpserver
 import hashlib
 import base64
 import json
+from bson import json_util
+from bson.objectid import ObjectId
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 from oauth2client.tools import argparser
+
+MONGODB_DB_URL = 'mongodb://localhost:27017/' # os.environ.get('OPENSHIFT_MONGODB_DB_URL') if os.environ.get('OPENSHIFT_MONGODB_DB_URL') else 'mongodb://localhost:27017/'
+MONGODB_DB_NAME = 'mitch' # os.environ.get('OPENSHIFT_APP_NAME') if os.environ.get('OPENSHIFT_APP_NAME') else 'getbookmarks'
+
+client = MongoClient(MONGODB_DB_URL)
+db = client[MONGODB_DB_NAME]
+
+class IndexHandler(tornado.web.RequestHandler):
+
+
+    def get(self):
+        self.write("Hello World!")
+        story = db.username.find_one({"_id":ObjectId("591ba0adfd2e12f7ad4137d0")})
+        self.write(json.dumps((story),default=json_util.default))
+
+    # def initialize(self, db):
+    #     self.db = db
 
 
 class HTMLHandler(tornado.web.RequestHandler):
@@ -18,6 +38,9 @@ class HTMLHandler(tornado.web.RequestHandler):
   # tab of
   #   https://cloud.google.com/console
   # Please ensure that you have enabled the YouTube Data API for your project.
+  def get(self):
+      db = self.application.database
+      self.write({ "message" : True, "data" : "P2Play"})
 
   def get(self, keyword):
     args = argparser.parse_args()
@@ -66,10 +89,13 @@ class HTMLHandler(tornado.web.RequestHandler):
 def make_app():
   return tornado.web.Application([
       (r"/search/([^/]*)", HTMLHandler),
+      (r'/', IndexHandler),
+      (r'/api/v1/stories',StoriesHandler),
+      (r'/api/v1/stories/(.*)', StoryHandler)
   ])
 
 if __name__ == "__main__":
-  global DEVELOPER_KEY 
+  global DEVELOPER_KEY
   DEVELOPER_KEY = "AIzaSyB0d2j5OKnZkhTVoz4Y4POs9yhKoMGrEAo"
   argparser.add_argument("--q", help="Search term", default="Google")
   argparser.add_argument("--max-results", help="Max results", default=25)
