@@ -19,7 +19,7 @@ MONGODB_DB_NAME = 'mitch' # os.environ.get('OPENSHIFT_APP_NAME') if os.environ.g
 
 client = MongoClient(MONGODB_DB_URL)
 db = client[MONGODB_DB_NAME]
-
+#client = MongoClient('localhost', 27017)
 class IndexHandler(tornado.web.RequestHandler):
 
 
@@ -28,9 +28,32 @@ class IndexHandler(tornado.web.RequestHandler):
         story = db.username.find_one({"_id":ObjectId("591ba0adfd2e12f7ad4137d0")})
         self.write(json.dumps((story),default=json_util.default))
 
+
+    def get(self, username):
+        self.write({"username" : username})
+        db.username.insert_one({"username" : username})
+
+
     # def initialize(self, db):
     #     self.db = db
+class PlaylistHandler(tornado.web.RequestHandler):
+    def post(self, username, playlist):
+        playlistData = {
+            "username" : username,
+            "playlist" : playlist,
+            "urls" : "",
+        }
+        self.write({"message" : True, "data" : playlistData})
+        db.playlists.insert_one(playlistData)
+    def post(self, username, playlist, song):
 
+        playlistData = {
+            "username" : username,
+            "playlist" : playlist,
+            "urls" :
+        }
+        self.write({"message" : True, "data" : playlistData})
+        db.playlists.insert_one({"username" : username, "playlist" : playlist})
 
 class HTMLHandler(tornado.web.RequestHandler):
 
@@ -90,8 +113,9 @@ def make_app():
   return tornado.web.Application([
       (r"/search/([^/]*)", HTMLHandler),
       (r'/', IndexHandler),
-      (r'/api/v1/stories',StoriesHandler),
-      (r'/api/v1/stories/(.*)', StoryHandler)
+      (r"/createAccount/([^/]*)", IndexHandler),
+      (r"/add/username/([^/]*)", PlaylistHandler),
+      (r"/createplaylist/([^/]*)/ip/([^/]*)", PlaylistHandler),
   ])
 
 if __name__ == "__main__":
