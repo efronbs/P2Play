@@ -40,17 +40,22 @@ class PlaylistHandler(tornado.web.RequestHandler):
     def post(self, username, playlist):
         playlistData = {
             "username" : username,
-            "playlist" : playlist,
-            "urls" : "",
+            "playlist" : playlist
         }
-        self.write({"message" : True, "data" : playlistData})
-        db.playlists.insert_one(playlistData)
-    def post(self, username, playlist, song):
+        result = db.playlists.find_one(playlistData)
+        if result == None:
+            db.playlists.insert_one(playlistData)
+            res = db.playlists.find_one(playlistData)
+            self.write({ "message" : True, "data" : json.loads(res.to_json())})
+        else:
+            self.write({"message" : False, "data" : json.loads(result)})
+
+    def get(self, username, playlist, song):
 
         playlistData = {
             "username" : username,
             "playlist" : playlist,
-            "urls" :
+            "urls" : db.playlists.find_one({"username" : username, "playlist" : playlist})
         }
         self.write({"message" : True, "data" : playlistData})
         db.playlists.insert_one({"username" : username, "playlist" : playlist})
@@ -89,7 +94,7 @@ class HTMLHandler(tornado.web.RequestHandler):
       # import pdb; pdb.set_trace()
       # print search_result
       if search_result["id"]["kind"] == "youtube#video":
-        videourl = "https://www.youtube.com/watch?v=" + search_result["id"]["videoId"]
+        videourl = "https://www.youtube.com/embed/" + search_result["id"]["videoId"]
         videores = { "title": search_result["snippet"]["title"], "url": videourl }
         videos.append(videores)
         # videos.append("%s %s" % (search_result["snippet"]["title"],
@@ -115,7 +120,7 @@ def make_app():
       (r'/', IndexHandler),
       (r"/createAccount/([^/]*)", IndexHandler),
       (r"/add/username/([^/]*)", PlaylistHandler),
-      (r"/createplaylist/([^/]*)/ip/([^/]*)", PlaylistHandler),
+      (r"/createplaylist/username/([^/]*)/playlistname/([^/]*)", PlaylistHandler),
   ])
 
 if __name__ == "__main__":
