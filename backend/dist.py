@@ -15,7 +15,7 @@ from apiclient.errors import HttpError
 from oauth2client.tools import argparser
 
 MONGODB_DB_URL = 'mongodb://localhost:27017/' # os.environ.get('OPENSHIFT_MONGODB_DB_URL') if os.environ.get('OPENSHIFT_MONGODB_DB_URL') else 'mongodb://localhost:27017/'
-MONGODB_DB_NAME = 'mitch' # os.environ.get('OPENSHIFT_APP_NAME') if os.environ.get('OPENSHIFT_APP_NAME') else 'getbookmarks'
+MONGODB_DB_NAME = 'P2Play' # os.environ.get('OPENSHIFT_APP_NAME') if os.environ.get('OPENSHIFT_APP_NAME') else 'getbookmarks'
 
 client = MongoClient(MONGODB_DB_URL)
 db = client[MONGODB_DB_NAME]
@@ -26,17 +26,38 @@ class IndexHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
         self.set_header('Access-Control-Allow-Methods', 'POST, GET')
 
-    def get(self):
-        self.write("Hello World!")
-        story = db.username.find_one({"_id":ObjectId("591ba0adfd2e12f7ad4137d0")})
-        self.write(json.dumps((story),default=json_util.default))
-
+    # def get(self):
+    #     self.write("Hello World!")
+    #     story = db.username.find_one({"_id":ObjectId("591ba0adfd2e12f7ad4137d0")})
+    #     self.write(json.dumps((story),default=json_util.default))
 
     def get(self, username):
         self.write({"username" : username})
         db.username.insert_one({"username" : username})
 
-class PlaylistHandler(tornado.web.RequestHandler):
+class CreateAccountHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET')
+
+    def post(self, username):
+        userData = {
+            "username" : username
+        }
+        userExistsCheck = db.users.find_one(userData)
+        if userExistsCheck != None:
+            self.write({"message" : False, "data" : "ALREADY_EXISTS"})
+        else:
+            db.users.insert_one(userData)
+            createSuccessCheck = db.users.find_one(userData)
+            if createSuccessCheck == None:
+                self.write({"message" : False, "data" : "CREATE_FAILED"})
+            else:
+                self.write({"message" : True, "data" : None})
+
+
+class CreatePlaylistHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
@@ -47,26 +68,31 @@ class PlaylistHandler(tornado.web.RequestHandler):
             "username" : username,
             "playlist" : playlist
         }
-        result = db.playlists.find_one(playlistData)
-        if result == None:
-            db.playlists.insert_one(playlistData)
-            res = db.playlists.find_one(playlistData)
-            res = {"username": str(res['username']), "playlist": str(res['playlist'])}
-            # import pdb; pdb.set_trace()
-            self.write({ "message" : True, "data" : res})
+
+        #check if playlist already exists. If so, return false, else continue
+        playlistExists = db.playlists.find_one({"playlist" : playlist})
+        if playlistExists != None:
+            self.write({"message" : False, "data" : "PLAYLIST_NAME_TAKEN"})
         else:
-            res = {"username": str(result['username']), "playlist": str(result['playlist'])}
-            self.write({"message" : False, "data" : res})
+            #check if user already exists. Else actually create the playlist
+            userExistsCheck = db.users.find_one({"username" : username})
+            if usersExistsCheck != None:
+                self.write({"message" : False, "data" : "PLAYLIST_ALREADY_EXISTS"})
+            else:
+                result = db.users_to_playlists.find_one(playlistData)
+                if result == None:
+                    playlistCreateSuccess = db.playlists.insert_one({"playlist" : playlist})
+                    db.users_to_playlists.insert_one(playlistData)
+                    res1 = db.users_to_playlists.find_one(playlistData)
+                    res2 = db.playlists.find_one({"playlist" : playlist})
+                    if res1 != None and res2 != None:
+                        self.write({ "message" : True, "data" : None})
+                    else:
+                        self.write({ "message" : False, "data" : None})
+                else:
+                    res = {"username": str(result['username']), "playlist": str(result['playlist'])}
+                    self.write({"message" : False, "data" : res})
 
-    def get(self, username, playlist, song):
-
-        playlistData = {
-            "username" : username,
-            "playlist" : playlist,
-            "urls" : db.playlists.find_one({"username" : username, "playlist" : playlist})
-        }
-        self.write({"message" : True, "data" : playlistData})
-        db.playlists.insert_one({"username" : username, "playlist" : playlist})
 
 class HTMLHandler(tornado.web.RequestHandler):
   def set_default_headers(self):
@@ -124,16 +150,55 @@ class HTMLHandler(tornado.web.RequestHandler):
     # print "Playlists:\n", "\n".join(playlists), "\n"
     self.write({ "message": True, "data": videos })
 
+class AddSongHandler(tornado.web.RequestHandler):
+
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET')
+
+    def post(self, playlistName, url, title):
+        playlistEntry = {
+            "playlistName" : playlistName,
+            "url" : url,
+            "title" : title
+        }
+        #check if the playlist already contains this song
+        existsCheck = db.song_in_playlist.find_one(playlistEntry)
+        if existsCheck == None:
+            self.write({ "message" : False, "data" : None})
+
+        # if not we insert it, and check to ensure the commit worked
+        db.song_in_playlist.insert_one(playlistEntry)
+        worked = db.song_in_playlist.find_one(playlistEntry)
+        if worked == None:
+            self.write({ "message" : False, "data" : None})
+        else:
+            self.write({"message" : True, "data" : None})
+
+# class PlaylistRetrievalHandler(tornado.web.RequestHandler):
+#
+#     def set_default_headers(self):
+#         self.set_header("Access-Control-Allow-Origin", "*")
+#         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+#         self.set_header('Access-Control-Allow-Methods', 'POST, GET')
+#
+#     def get(self, username, playlist):
+#         playlistInfo = {
+#             "username" : username,
+#             "playlist" : playlist
+#         }
+#         db.
 
 
 def make_app():
   return tornado.web.Application([
-      (r"/search/([^/]*)", HTMLHandler),
+      (r"/search/([^/]*)", HTMLHandler), #searchs youtube api for song
       (r'/', IndexHandler),
-      (r"/createAccount/([^/]*)", IndexHandler),
-      (r"/add/username/([^/]*)", PlaylistHandler),
-      (r"/createplaylist/username/([^/]*)/playlistname/([^/]*)", PlaylistHandler),
-      (r"/addsong/playlistname/([^/]*)/url/([^/]*)")
+      (r"/createaccount/username/([^/]*)", CreateAccountHandler), #creates a new user
+      (r"/createplaylist/username/([^/]*)/playlistname/([^/]*)", CreatePlaylistHandler), #creates a new playlist registered to the given user
+      (r"/addsong/playlistname/([^/]*)/url/([^/]*)/title/([^/]*)", AddSongHandler) #adds the given song to the given playlist
+    #   (r"/getplaylist/username/([^/]*)/playlist/([^/]*)", PlaylistRetrievalHandler) #requests the given playlist
   ])
 
 if __name__ == "__main__":
