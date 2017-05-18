@@ -21,7 +21,10 @@ client = MongoClient(MONGODB_DB_URL)
 db = client[MONGODB_DB_NAME]
 #client = MongoClient('localhost', 27017)
 class IndexHandler(tornado.web.RequestHandler):
-
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET')
 
     def get(self):
         self.write("Hello World!")
@@ -33,10 +36,12 @@ class IndexHandler(tornado.web.RequestHandler):
         self.write({"username" : username})
         db.username.insert_one({"username" : username})
 
-
-    # def initialize(self, db):
-    #     self.db = db
 class PlaylistHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET')
+
     def post(self, username, playlist):
         playlistData = {
             "username" : username,
@@ -46,9 +51,12 @@ class PlaylistHandler(tornado.web.RequestHandler):
         if result == None:
             db.playlists.insert_one(playlistData)
             res = db.playlists.find_one(playlistData)
-            self.write({ "message" : True, "data" : json.loads(res.to_json())})
+            res = {"username": str(res['username']), "playlist": str(res['playlist'])}
+            # import pdb; pdb.set_trace()
+            self.write({ "message" : True, "data" : res})
         else:
-            self.write({"message" : False, "data" : json.loads(result)})
+            res = {"username": str(result['username']), "playlist": str(result['playlist'])}
+            self.write({"message" : False, "data" : res})
 
     def get(self, username, playlist, song):
 
@@ -61,6 +69,10 @@ class PlaylistHandler(tornado.web.RequestHandler):
         db.playlists.insert_one({"username" : username, "playlist" : playlist})
 
 class HTMLHandler(tornado.web.RequestHandler):
+  def set_default_headers(self):
+      self.set_header("Access-Control-Allow-Origin", "*")
+      self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+      self.set_header('Access-Control-Allow-Methods', 'POST, GET')
 
   # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
   # tab of
@@ -121,13 +133,14 @@ def make_app():
       (r"/createAccount/([^/]*)", IndexHandler),
       (r"/add/username/([^/]*)", PlaylistHandler),
       (r"/createplaylist/username/([^/]*)/playlistname/([^/]*)", PlaylistHandler),
+      (r"/addsong/playlistname/([^/]*)/url/([^/]*)")
   ])
 
 if __name__ == "__main__":
   global DEVELOPER_KEY
   DEVELOPER_KEY = "AIzaSyB0d2j5OKnZkhTVoz4Y4POs9yhKoMGrEAo"
   argparser.add_argument("--q", help="Search term", default="Google")
-  argparser.add_argument("--max-results", help="Max results", default=25)
+  argparser.add_argument("--max-results", help="Max results", default=5)
   app = tornado.httpserver.HTTPServer(make_app())
   app.listen(8888)
   tornado.ioloop.IOLoop.current().start()
