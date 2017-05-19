@@ -70,29 +70,19 @@ class CreatePlaylistHandler(tornado.web.RequestHandler):
             "playlist" : playlist
         }
 
-        #check if playlist already exists. If so, return false, else continue
+        #check if playlist exist. If so, return false, else continue
         playlistExists = db.playlists.find_one({"playlist" : playlist})
         if playlistExists != None:
             self.write({"message" : False, "data" : "PLAYLIST_NAME_TAKEN"})
         else:
-            #check if user already exists. Else actually create the playlist
-            userExistsCheck = db.users.find_one({"username" : username})
-            if usersExistsCheck != None:
-                self.write({"message" : False, "data" : "PLAYLIST_ALREADY_EXISTS"})
+            playlistCreateSuccess = db.playlists.insert_one({"playlist" : playlist})
+            db.users_to_playlists.insert_one(playlistData)
+            res1 = db.users_to_playlists.find_one(playlistData)
+            res2 = db.playlists.find_one({"playlist" : playlist})
+            if res1 != None and res2 != None:
+                self.write({ "message" : True, "data" : None})
             else:
-                result = db.users_to_playlists.find_one(playlistData)
-                if result == None:
-                    playlistCreateSuccess = db.playlists.insert_one({"playlist" : playlist})
-                    db.users_to_playlists.insert_one(playlistData)
-                    res1 = db.users_to_playlists.find_one(playlistData)
-                    res2 = db.playlists.find_one({"playlist" : playlist})
-                    if res1 != None and res2 != None:
-                        self.write({ "message" : True, "data" : None})
-                    else:
-                        self.write({ "message" : False, "data" : None})
-                else:
-                    res = {"username": str(result['username']), "playlist": str(result['playlist'])}
-                    self.write({"message" : False, "data" : res})
+                self.write({ "message" : False, "data" : "CREATION_FAILED"})
 
 
 class HTMLHandler(tornado.web.RequestHandler):
