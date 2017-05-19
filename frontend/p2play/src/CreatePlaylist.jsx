@@ -25,6 +25,32 @@ class CreatePlaylist extends React.Component {
 
     // document.body.appendChild(addScript);
     // document.body.appendChild(script2);
+
+    let tag = document.createElement('script');
+    tag.src = "//www.youtube.com/player_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
+
+  onYouTubePlayerAPIReady() {
+    player = new YT.Player('video', {
+      events: {
+        // call this function when player is ready to use
+        'onReady': this.onPlayerReady
+      }
+    });
+  }
+
+  onPlayerReady(event) {
+    var playButton = document.getElementById("play-button");
+    playButton.addEventListener("click", function() {
+      player.playVideo();
+    });
+    
+    var pauseButton = document.getElementById("pause-button");
+    pauseButton.addEventListener("click", function() {
+      player.pauseVideo();
+    });
   }
 
    handleChange(event) {
@@ -79,7 +105,7 @@ class CreatePlaylist extends React.Component {
 
   render() {
 
-     let allurls = [];
+    let allurls = [];
     let song = {};
     let playlist = localStorage.getItem('playlistname');
     PlayActions.getPlaylist(playlist)
@@ -89,12 +115,13 @@ class CreatePlaylist extends React.Component {
           let res = JSON.parse(data.data);
           
           allurls = res.map(r => {
+            let url = r.url + '_ok?enablejsapi=1';
             return (
               <label>
                 <div id="ishank">
                   <label>{r.title}</label>
                   <div>
-                    <iframe src={r.url} style={{ flex: '1', WebkitFlex: '1' }} />
+                    <iframe src={url} id={r.url} style={{ flex: '1', WebkitFlex: '1' }} />
                   </div>
                 </div>
               </label>
