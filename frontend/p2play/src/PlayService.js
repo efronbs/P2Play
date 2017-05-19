@@ -14,7 +14,7 @@ class PlayService {
   }
 
   getUrls(searchKeyword) {
-    return fetch(remote + pservice + 'search/' + searchKeyword,
+    return fetch(this.state.remote + this.state.pservice + 'search/' + searchKeyword,
       {
         method: 'GET',
       })
@@ -24,7 +24,7 @@ class PlayService {
     }
 
   createPlaylist(username, name) {
-    return fetch(remote + uservice + 'createplaylist/username/' + username + "/playlistname/" + name,
+    return fetch(this.state.remote + this.state.uservice + 'createplaylist/username/' + username + "/playlistname/" + name,
       {
         method: 'POST',
       })
@@ -34,7 +34,7 @@ class PlayService {
   }
 
   addSong(song) {
-    let stuff = remote + pservice + 'addsong/playlistname/'
+    let stuff = this.state.remote + this.state.pservice + 'addsong/playlistname/'
       + song.playlistname + "/url/" + song.url + '/title/' + song.title;
     console.log(stuff);
 
@@ -48,7 +48,7 @@ class PlayService {
   }
 
   getPlaylist(playlist) {
-    return fetch(remote + pservice + 'getplaylist/playlist/'+ playlist,
+    return fetch(this.state.remote + this.state.pservice + 'getplaylist/playlist/'+ playlist,
       {
         method: 'GET',
       })
