@@ -39,10 +39,10 @@ class App extends Component {
     PlayActions.createPlaylist(username, name)
       .then(resp => {
         if(resp.data.message) {
-          alert('A new playlist was created!');
+          // alert('A new playlist was created!');
           this.context.router.push(Config.appRoutes.CREATE_PLAYLIST);
         } else {
-          alert('playlist already exists, click ok to join!');
+          // alert('playlist already exists, click ok to join!');
           this.context.router.push(Config.appRoutes.CREATE_PLAYLIST);
         }
       });

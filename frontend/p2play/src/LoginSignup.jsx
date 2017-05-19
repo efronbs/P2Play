@@ -35,7 +35,7 @@ class LoginSignup extends Component {
         if(data.message) {
           // account created successfully
           localStorage.setItem('username', username);
-          alert('Signing you in!');
+          // alert('Signing you in!');
           this.context.router.push(Config.appRoutes.APP);
         } else {
           //account creation failed. 
