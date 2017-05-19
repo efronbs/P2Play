@@ -51,7 +51,7 @@ class LoginSignup extends Component {
         <label>
           <div>
             <input ref="username" className='usernameField' type="text" name='username' />
-            <button className='routeButton' id='joinButton' onClick={this.handleUsernameInput.bind(this)}>Join</button>
+            <button className='routeButton' id='joinButton' onClick={this.handleUsernameInput.bind(this)}>Login</button>
           </div>
         </label>
       </div>
