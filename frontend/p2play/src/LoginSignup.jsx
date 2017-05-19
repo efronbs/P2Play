@@ -26,7 +26,7 @@ class LoginSignup extends Component {
   }
 
   handleUsernameInput(event) {
-    let username = this.refs.username.innerText;
+    let username = this.refs.username.value;
 
     PlayActions.createAccount(username)
       .then(resp => {
@@ -46,11 +46,11 @@ class LoginSignup extends Component {
   render() {
     return (
       <div className="App">
-        <h3>P2Play</h3>
+        <h1>P2Play</h1>
         <label>
           Login/Signup
           <div>
-            <input ref="username" type="text" name='username' />
+            <input ref="username" className='usernameField' type="text" name='username' />
             <button className='routeButton' id='joinButton' onClick={this.handleUsernameInput.bind(this)}>Join</button>
           </div>
         </label>
