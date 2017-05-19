@@ -57,7 +57,7 @@ class App extends Component {
     return (
       <div className="App">
         <h3>P2Play</h3>
-        <input ref="val" type="text" onChange={this.handleChange.bind(this)} />
+        <input ref="val" className='usernameField' type="text" onChange={this.handleChange.bind(this)} />
         <div>
           <button className='routeButton' onClick={this.createPlaylist.bind(this)} id='createButton'>Join/Create</button>
         </div>
