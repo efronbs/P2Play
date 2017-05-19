@@ -3,10 +3,12 @@ import fetch from 'isomorphic-fetch';
 class PlayService {
 
   constructor() {
-    let ishankIP = 'http://ishank.wlan.rose-hulman.edu:8888/';
-    let remote = 'http://4902-03.csse.rose-hulman.edu:8000/';
-    let pservice = 'pservice/';
-    let uservice = 'uservice/';
+    this.state = {
+      // let ishankIP = 'http://ishank.wlan.rose-hulman.edu:8888/';
+      remote : 'http://4902-03.csse.rose-hulman.edu:8000/';
+      pservice : 'pservice/';
+      uservice : 'uservice/';
+    }
     // let playlistService = 'http://4902-03.csse.rose-hulman.edu:9001/';
     // let userService = 'http://4902-03.csse.rose-hulman.edu:9000/';
   }
@@ -56,7 +58,7 @@ class PlayService {
   }
 
   createAccount(username) {
-    return fetch(remote + uservice + 'createaccount/username/'+ username,
+    return fetch(this.state.remote + this.state.uservice + 'createaccount/username/'+ username,
       {
         method: 'POST',
       })
