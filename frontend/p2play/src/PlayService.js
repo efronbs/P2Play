@@ -5,9 +5,9 @@ class PlayService {
   constructor() {
     this.state = {
       // let ishankIP = 'http://ishank.wlan.rose-hulman.edu:8888/';
-      remote : 'http://4902-03.csse.rose-hulman.edu:8000/';
-      pservice : 'pservice/';
-      uservice : 'uservice/';
+      remote : 'http://4902-03.csse.rose-hulman.edu:8000/',
+      pservice : 'pservice/',
+      uservice : 'uservice/'
     }
     // let playlistService = 'http://4902-03.csse.rose-hulman.edu:9001/';
     // let userService = 'http://4902-03.csse.rose-hulman.edu:9000/';
