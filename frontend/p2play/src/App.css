@@ -38,6 +38,13 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
   height: 80px;
+  transform: translate(-50%, -50%);
+  transform: scale(1);    
+  animation: play 1s steps(16) infinite;
+}
+
+@keyframes play {
+   from { background-position:    0px; }
+     to { background-position: -1024px; }
 }
