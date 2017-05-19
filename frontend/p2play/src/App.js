@@ -31,7 +31,7 @@ class App extends Component {
 
   createPlaylist() {
     let name = this.refs.val.value;
-    let username = "tandoni";
+    let username = localStorage.getItem('username');
     localStorage.setItem('playlistname', name);
 
     PlayActions.createPlaylist(username, name)

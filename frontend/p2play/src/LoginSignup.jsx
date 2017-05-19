@@ -33,6 +33,7 @@ class LoginSignup extends Component {
         let data = resp.data;
         if(data.message) {
           // account created successfully
+          localStorage.setItem('username', username);
           alert('Signing you in!');
           this.context.router.push(Config.appRoutes.APP);
         } else {
