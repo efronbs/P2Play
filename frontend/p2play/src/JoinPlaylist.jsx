@@ -45,7 +45,7 @@ class JoinPlaylist extends React.Component {
       });
 
     return (
-      <div>
+      <div className="App">
         {this.state.songList}
       </div>
       );

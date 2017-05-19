@@ -106,7 +106,7 @@ class CreatePlaylist extends React.Component {
 
 
     return (
-      <div>
+      <div className="App">
         <div>
           <form onSubmit={this.handleSubmit.bind(this)}>
             <label>
