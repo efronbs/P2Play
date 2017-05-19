@@ -129,5 +129,5 @@ if __name__ == "__main__":
   argparser.add_argument("--q", help="Search term", default="Google")
   argparser.add_argument("--max-results", help="Max results", default=5)
   app = tornado.httpserver.HTTPServer(make_app())
-  app.listen(8888)
+  app.listen(9001)
   tornado.ioloop.IOLoop.current().start()
