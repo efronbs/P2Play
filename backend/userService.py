@@ -15,7 +15,7 @@ from apiclient.discovery import build
 from apiclient.errors import HttpError
 from oauth2client.tools import argparser
 
-MONGODB_DB_URL = 'mongodb://localhost:27017/' # os.environ.get('OPENSHIFT_MONGODB_DB_URL') if os.environ.get('OPENSHIFT_MONGODB_DB_URL') else 'mongodb://localhost:27017/'
+MONGODB_DB_URL = 'mongodb://137.112.221.137:27017/' # os.environ.get('OPENSHIFT_MONGODB_DB_URL') if os.environ.get('OPENSHIFT_MONGODB_DB_URL') else 'mongodb://localhost:27017/'
 MONGODB_DB_NAME = 'P2Play' # os.environ.get('OPENSHIFT_APP_NAME') if os.environ.get('OPENSHIFT_APP_NAME') else 'getbookmarks'
 
 client = MongoClient(MONGODB_DB_URL)

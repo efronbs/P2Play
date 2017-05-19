@@ -2,6 +2,9 @@ import fetch from 'isomorphic-fetch';
 
 class PlayService {
 
+  let ishankIP = 'http://ishank.wlan.rose-hulman.edu:8888/';
+  let playlistService = 'http://4902-03.csse.rose-hulman.edu:9001/';
+  let userService = 'http://4902-03.csse.rose-hulman.edu:9000/';
 
   getUrls(searchKeyword) {
     return fetch('http://ishank.wlan.rose-hulman.edu:8888/search/' + searchKeyword,
@@ -59,6 +62,3 @@ class PlayService {
 }
 
 export default new PlayService();
-
-
-
