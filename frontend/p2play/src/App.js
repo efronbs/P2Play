@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Config from './app-config.js';
+import PlayActions from './PlayActions'
 
 class App extends Component {
 
@@ -9,13 +10,40 @@ class App extends Component {
     this.props = props;
     this.context = context;
 
+    // this.handlePlaylistNameStoreChange = this.handlePlaylistNameStoreChange.bind(this);
+
     this.state = {
       value: ''
     };
   }
 
+  componentDidMount() {
+    // PlayStore.listen(this.handlePlaylistNameStoreChange);
+  }
+
+  componentWillUnmount() {
+    // PlayStore.unlisten(this.handlePlaylistNameStoreChange);
+  }
+
+  handlePlaylistNameStoreChange(playStore) {
+
+  }
+
   createPlaylist() {
-    console.log(this.refs.val.value);
+    let name = this.refs.val.value;
+    let username = "tandoni";
+    localStorage.setItem('playlistname', name);
+
+    PlayActions.createPlaylist(username, name)
+      .then(resp => {
+        if(resp.data.message) {
+          alert('A new playlist was created!');
+          this.context.router.push(Config.appRoutes.CREATE_PLAYLIST);
+        } else {
+          alert('playlist already exists, click ok to join!');
+          this.context.router.push(Config.appRoutes.JOIN_PLAYLIST);
+        }
+      });
 
 
     // this.context.router.push(Config.appRoutes.CREATE_PLAYLIST);

@@ -28,6 +28,32 @@ class PlayActions {
             });
       };
   }
+
+  addSong(song) {
+    return dispatcher => {
+        return new Promise((resolve, reject) => {
+          PlayService.addSong(song)
+            .then(response => {
+              const data = response;
+                dispatcher({ data });
+                resolve({ data });
+              });
+            });
+      };
+  }
+
+  getPlaylist(playlist) {
+    return dispatcher => {
+      return new Promise((resolve, reject) => {
+        PlayService.getPlaylist(playlist)
+          .then(response => {
+            const data = response;
+              dispatcher({ data });
+              resolve({ data });
+            });
+          });
+    };
+  }
 }
 
 

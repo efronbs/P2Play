@@ -5,14 +5,20 @@ class PlayStore() {
 
   constructor() {
     this.bindListeners({
-      updateUrls: PlayActions.getUrls
+      updateUrls: PlayActions.getUrls,
+      updatePlaylistName: PlayActions.getPlaylistName
     });
 
     this.urls = {};
+    this.playlistName = '';
   }
 
   updateUrls(data) {
-    this.setState({data})
+    this.setState({data});
+  }
+
+  updatePlaylistName(playlistName) {
+    this.setState({playlistName});
   }
 
 }
