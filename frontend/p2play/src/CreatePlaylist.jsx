@@ -111,9 +111,9 @@ class CreatePlaylist extends React.Component {
           <form onSubmit={this.handleSubmit.bind(this)}>
             <label>
               Name:
-              <input type="text" value={this.state.value} onChange={this.handleChange.bind(this)} />
+              <input type="text" className="usernameField" value={this.state.value} onChange={this.handleChange.bind(this)} />
             </label>
-            <input type="submit" value="Submit" />
+            <input type="submit" className="routeButton" value="Submit" />
           </form>
         </div>
 
