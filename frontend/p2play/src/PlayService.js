@@ -4,12 +4,15 @@ class PlayService {
 
   constructor() {
     let ishankIP = 'http://ishank.wlan.rose-hulman.edu:8888/';
-    let playlistService = 'http://4902-03.csse.rose-hulman.edu:9001/';
-    let userService = 'http://4902-03.csse.rose-hulman.edu:9000/';
+    let remote = 'http://4902-03.csse.rose-hulman.edu:8000/';
+    let pserviceMod = 'pservice/';
+    let userviceMod = 'uservice/';
+    // let playlistService = 'http://4902-03.csse.rose-hulman.edu:9001/';
+    // let userService = 'http://4902-03.csse.rose-hulman.edu:9000/';
   }
 
   getUrls(searchKeyword) {
-    return fetch('http://ishank.wlan.rose-hulman.edu:8888/search/' + searchKeyword,
+    return fetch(remote + pservice + 'search/' + searchKeyword,
       {
         method: 'GET',
       })
@@ -19,7 +22,7 @@ class PlayService {
     }
 
   createPlaylist(username, name) {
-    return fetch('http://ishank.wlan.rose-hulman.edu:8888/createplaylist/username/' + username + "/playlistname/" + name,
+    return fetch(remote + uservice + 'createplaylist/username/' + username + "/playlistname/" + name,
       {
         method: 'POST',
       })
@@ -29,7 +32,7 @@ class PlayService {
   }
 
   addSong(song) {
-    let stuff = 'http://ishank.wlan.rose-hulman.edu:8888/addsong/playlistname/'
+    let stuff = remote + pservice + 'addsong/playlistname/'
       + song.playlistname + "/url/" + song.url + '/title/' + song.title;
     console.log(stuff);
 
@@ -43,7 +46,7 @@ class PlayService {
   }
 
   getPlaylist(playlist) {
-    return fetch('http://ishank.wlan.rose-hulman.edu:8888/getplaylist/playlist/'+ playlist,
+    return fetch(remote + pservice + 'getplaylist/playlist/'+ playlist,
       {
         method: 'GET',
       })
@@ -53,7 +56,7 @@ class PlayService {
   }
 
   createAccount(username) {
-    return fetch('http://ishank.wlan.rose-hulman.edu:8888/createaccount/username/'+ username,
+    return fetch(remote + uservice + 'createaccount/username/'+ username,
       {
         method: 'POST',
       })
