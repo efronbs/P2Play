@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import Config from './app-config.js';
-import PlayActions from './PlayActions'
+import PlayActions from './PlayActions';
+import logo from './logo.png';
+
 
 class App extends Component {
 
@@ -56,7 +58,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h3>P2Play</h3>
+        <img src={logo} className="App-logo" alt="logo" />
         <input ref="val" className='usernameField' type="text" onChange={this.handleChange.bind(this)} />
         <div>
           <button className='routeButton' onClick={this.createPlaylist.bind(this)} id='createButton'>Join/Create</button>
