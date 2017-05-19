@@ -47,7 +47,6 @@ class LoginSignup extends Component {
   render() {
     return (
       <div className="App">
-        <h1>P2Play</h1>
         <img src={logo} className="App-logo" alt="logo" />
         <label>
           Login/Signup
