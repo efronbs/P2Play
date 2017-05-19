@@ -29,32 +29,32 @@ class CreatePlaylist extends React.Component {
     // document.body.appendChild(addScript);
     // document.body.appendChild(script2);
 
-    let tag = document.createElement('script');
-    tag.src = "//www.youtube.com/player_api";
-    let firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // let tag = document.createElement('script');
+    // tag.src = "//www.youtube.com/player_api";
+    // let firstScriptTag = document.getElementsByTagName('script')[0];
+    // firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
 
-  onYouTubePlayerAPIReady() {
-    this.player = new this.YT.Player('video', {
-      events: {
-        // call this function when player is ready to use
-        'onReady': this.onPlayerReady
-      }
-    });
-  }
+  // onYouTubePlayerAPIReady() {
+  //   this.player = new this.YT.Player('video', {
+  //     events: {
+  //       // call this function when player is ready to use
+  //       'onReady': this.onPlayerReady
+  //     }
+  //   });
+  // }
 
-  onPlayerReady(event) {
-    var playButton = document.getElementById("play-button");
-    playButton.addEventListener("click", function() {
-      this.player.playVideo();
-    });
+  // onPlayerReady(event) {
+  //   var playButton = document.getElementById("play-button");
+  //   playButton.addEventListener("click", function() {
+  //     this.player.playVideo();
+  //   });
     
-    var pauseButton = document.getElementById("pause-button");
-    pauseButton.addEventListener("click", function() {
-      this.player.pauseVideo();
-    });
-  }
+  //   var pauseButton = document.getElementById("pause-button");
+  //   pauseButton.addEventListener("click", function() {
+  //     this.player.pauseVideo();
+  //   });
+  // }
 
    handleChange(event) {
     this.setState({value: event.target.value});
@@ -118,13 +118,13 @@ class CreatePlaylist extends React.Component {
           let res = JSON.parse(data.data);
           
           allurls = res.map(r => {
-            let url = r.url + '_ok?enablejsapi=1';
+            let url = r.url;
             return (
               <label>
                 <div id="ishank">
                   <label>{r.title}</label>
                   <div>
-                    <iframe src={url} id={r.url} style={{ flex: '1', WebkitFlex: '1' }} />
+                    <iframe src={url} style={{ flex: '1', WebkitFlex: '1' }} />
                   </div>
                 </div>
               </label>
