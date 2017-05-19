@@ -9,6 +9,7 @@ import hashlib
 import base64
 import json
 from bson import json_util
+from bson.json_util import dumps
 from bson.objectid import ObjectId
 from apiclient.discovery import build
 from apiclient.errors import HttpError
@@ -176,19 +177,20 @@ class AddSongHandler(tornado.web.RequestHandler):
         else:
             self.write({"message" : True, "data" : None})
 
-# class PlaylistRetrievalHandler(tornado.web.RequestHandler):
-#
-#     def set_default_headers(self):
-#         self.set_header("Access-Control-Allow-Origin", "*")
-#         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
-#         self.set_header('Access-Control-Allow-Methods', 'POST, GET')
-#
-#     def get(self, username, playlist):
-#         playlistInfo = {
-#             "username" : username,
-#             "playlist" : playlist
-#         }
-#         db.
+class PlaylistRetrievalHandler(tornado.web.RequestHandler):
+
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET')
+
+    def get(self, playlist):
+        playlistInfo = {
+            "username" : username,
+            "playlist" : playlist
+        }
+        result = db.song_in_playlist.find({'playlistName': playlist})
+        self.write({'message': True, 'data': dumps(result)})
 
 
 def make_app():
@@ -197,8 +199,8 @@ def make_app():
       (r'/', IndexHandler),
       (r"/createaccount/username/([^/]*)", CreateAccountHandler), #creates a new user
       (r"/createplaylist/username/([^/]*)/playlistname/([^/]*)", CreatePlaylistHandler), #creates a new playlist registered to the given user
-      (r"/addsong/playlistname/([^/]*)/url/([^/]*)/title/([^/]*)", AddSongHandler) #adds the given song to the given playlist
-    #   (r"/getplaylist/username/([^/]*)/playlist/([^/]*)", PlaylistRetrievalHandler) #requests the given playlist
+      (r"/addsong/playlistname/([^/]*)/url/(.*)/title/(.*)", AddSongHandler), #adds the given song to the given playlist
+      (r"/getplaylist/playlist/([^/]*)", PlaylistRetrievalHandler), #requests the given playlist. DO AUTH LATER USING USERNAME
   ])
 
 if __name__ == "__main__":
