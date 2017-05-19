@@ -10,6 +10,9 @@ class CreatePlaylist extends React.Component {
     this.props = props;
     this.context = context;
 
+    this.player = null;
+    this.YT = null;
+
     this.state = {
       songList: [],
       value: ''
@@ -33,7 +36,7 @@ class CreatePlaylist extends React.Component {
   }
 
   onYouTubePlayerAPIReady() {
-    player = new YT.Player('video', {
+    this.player = new this.YT.Player('video', {
       events: {
         // call this function when player is ready to use
         'onReady': this.onPlayerReady
