@@ -48,7 +48,7 @@ class CreateAccountHandler(tornado.web.RequestHandler):
         }
         userExistsCheck = db.users.find_one(userData)
         if userExistsCheck != None:
-            self.write({"message" : False, "data" : "ALREADY_EXISTS"})
+            self.write({"message" : True, "data" : "ALREADY_EXISTS"})
         else:
             db.users.insert_one(userData)
             createSuccessCheck = db.users.find_one(userData)
@@ -173,10 +173,6 @@ class PlaylistRetrievalHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Allow-Methods', 'POST, GET')
 
     def get(self, playlist):
-        # playlistInfo = {
-        #     "username" : username,
-        #     "playlist" : playlist
-        # }
         result = db.song_in_playlist.find({'playlistName': playlist})
         self.write({'message': True, 'data': dumps(result)})
 
