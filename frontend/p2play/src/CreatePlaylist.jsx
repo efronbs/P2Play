@@ -41,7 +41,8 @@ class CreatePlaylist extends React.Component {
 
     let allurls = [];
     let song = {};
-    PlayActions.getUrls(this.state.value)
+    let tf = this.refs.tf.value;
+    PlayActions.getUrls(tf)
       .then(resp => {
         let data = resp.data;
         if(data.message) {
@@ -107,14 +108,12 @@ class CreatePlaylist extends React.Component {
 
     return (
       <div className="App">
-        <div>
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            <label>
-              Song Keyword
-              <input type="text" className="usernameField" value={this.state.value} onChange={this.handleChange.bind(this)} />
-            </label>
-            <input type="submit" className="routeButton" value="Submit" />
-          </form>
+        <div className='form-wrapper cf'>
+          <label>
+            Song Keyword
+            <input type="text" ref='tf' className="usernameField" value={this.state.value} onChange={this.handleChange.bind(this)} />
+            <button onClick={this.handleSubmit.bind(this)} type="submit" className="routeButton" value="Submit" />
+          </label>
         </div>
 
         <div>

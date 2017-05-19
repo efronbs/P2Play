@@ -101,7 +101,7 @@
         font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
         color: #fff;
         text-transform: uppercase;
-        background: #d83c3c;
+        background: #e15119;
         -moz-border-radius: 0 3px 3px 0;
         -webkit-border-radius: 0 3px 3px 0;
         border-radius: 0 3px 3px 0;      
@@ -122,7 +122,7 @@
         position: absolute;
         border-width: 8px 8px 8px 0;
         border-style: solid solid solid none;
-        border-color: transparent #d83c3c transparent;
+        border-color: transparent #e15119 transparent;
         top: 12px;
         left: -6px;
     }
