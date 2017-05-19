@@ -5,8 +5,8 @@ class PlayService {
   constructor() {
     let ishankIP = 'http://ishank.wlan.rose-hulman.edu:8888/';
     let remote = 'http://4902-03.csse.rose-hulman.edu:8000/';
-    let pserviceMod = 'pservice/';
-    let userviceMod = 'uservice/';
+    let pservice = 'pservice/';
+    let uservice = 'uservice/';
     // let playlistService = 'http://4902-03.csse.rose-hulman.edu:9001/';
     // let userService = 'http://4902-03.csse.rose-hulman.edu:9000/';
   }
