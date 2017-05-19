@@ -41,7 +41,7 @@ class App extends Component {
           this.context.router.push(Config.appRoutes.CREATE_PLAYLIST);
         } else {
           alert('playlist already exists, click ok to join!');
-          this.context.router.push(Config.appRoutes.JOIN_PLAYLIST);
+          this.context.router.push(Config.appRoutes.CREATE_PLAYLIST);
         }
       });
 
@@ -59,10 +59,7 @@ class App extends Component {
         <h3>P2Play</h3>
         <input ref="val" type="text" onChange={this.handleChange.bind(this)} />
         <div>
-          <button className='routeButton' id='joinButton'>Join</button>
-        </div>
-        <div>
-          <button className='routeButton' onClick={this.createPlaylist.bind(this)} id='createButton'>Create</button>
+          <button className='routeButton' onClick={this.createPlaylist.bind(this)} id='createButton'>Join/Create</button>
         </div>
     
       </div>

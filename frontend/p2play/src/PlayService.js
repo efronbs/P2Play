@@ -46,6 +46,19 @@ class PlayService {
         return response.json();
     });
   }
+
+  createAccount(username) {
+    return fetch('http://ishank.wlan.rose-hulman.edu:8888/createaccount/username/'+ username,
+      {
+        method: 'POST',
+      })
+      .then(response => {
+        return response.json();
+    });
+  }
 }
 
 export default new PlayService();
+
+
+

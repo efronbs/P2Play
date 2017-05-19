@@ -51,8 +51,21 @@ class PlayActions {
               dispatcher({ data });
               resolve({ data });
             });
-          });
-    };
+      });
+    }
+  }
+
+  createAccount(username) {
+    return dispatcher => {
+      return new Promise((resolve, reject) => {
+        PlayService.createAccount(username)
+          .then(response => {
+            const data = response;
+              dispatcher({ data });
+              resolve({ data });
+            });
+      });
+    }
   }
 }
 

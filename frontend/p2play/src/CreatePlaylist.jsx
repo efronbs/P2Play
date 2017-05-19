@@ -78,6 +78,32 @@ class CreatePlaylist extends React.Component {
 
   render() {
 
+     let allurls = [];
+    let song = {};
+    let playlist = localStorage.getItem('playlistname');
+    PlayActions.getPlaylist(playlist)
+      .then(resp => {
+        let data = resp.data;
+        if(data.message) {
+          let res = JSON.parse(data.data);
+          
+          allurls = res.map(r => {
+            return (
+              <label>
+                <div id="ishank">
+                  <label>{r.title}</label>
+                  <div>
+                    <iframe src={r.url} style={{ flex: '1', WebkitFlex: '1' }} />
+                  </div>
+                </div>
+              </label>
+               );
+          });
+
+          this.setState({songList: allurls});
+        }
+      });
+
 
     return (
       <div>
