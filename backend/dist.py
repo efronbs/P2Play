@@ -75,11 +75,9 @@ class CreatePlaylistHandler(tornado.web.RequestHandler):
         if playlistExists != None:
             self.write({"message" : False, "data" : "PLAYLIST_NAME_TAKEN"})
         else:
-            playlistCreateSuccess = db.playlists.insert_one({"playlist" : playlist})
-            db.users_to_playlists.insert_one(playlistData)
-            res1 = db.users_to_playlists.find_one(playlistData)
-            res2 = db.playlists.find_one({"playlist" : playlist})
-            if res1 != None and res2 != None:
+            db.playlists.insert_one(playlistData)
+            res = db.playlists.find_one(playlistData)
+            if res != None:
                 self.write({ "message" : True, "data" : None})
             else:
                 self.write({ "message" : False, "data" : "CREATION_FAILED"})
@@ -175,10 +173,10 @@ class PlaylistRetrievalHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Allow-Methods', 'POST, GET')
 
     def get(self, playlist):
-        playlistInfo = {
-            "username" : username,
-            "playlist" : playlist
-        }
+        # playlistInfo = {
+        #     "username" : username,
+        #     "playlist" : playlist
+        # }
         result = db.song_in_playlist.find({'playlistName': playlist})
         self.write({'message': True, 'data': dumps(result)})
 
