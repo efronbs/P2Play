@@ -110,9 +110,8 @@ class CreatePlaylist extends React.Component {
       <div className="App">
         <div className='form-wrapper cf'>
           <label>
-            Song Keyword
-            <input type="text" ref='tf' className="usernameField" value={this.state.value} onChange={this.handleChange.bind(this)} />
-            <button onClick={this.handleSubmit.bind(this)} type="submit" className="routeButton" value="Submit" />
+            <input placeholder="Search song here..." type="text" ref='tf' className="usernameField" value={this.state.value} onChange={this.handleChange.bind(this)} />
+            <button onClick={this.handleSubmit.bind(this)} type="submit" className="routeButton" value="Submit">Search</button>
           </label>
         </div>
 

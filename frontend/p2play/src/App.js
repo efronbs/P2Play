@@ -60,7 +60,7 @@ class App extends Component {
       <div className="App">
         <img src={logo} className="App-logo" alt="logo" />
         <div className='form-wrapper cf'>
-        <input ref="val" className='usernameField' type="text" onChange={this.handleChange.bind(this)} />
+        <input placeholder="Type playlist here..." ref="val" className='usernameField' type="text" onChange={this.handleChange.bind(this)} />
         <button className='routeButton' onClick={this.createPlaylist.bind(this)} id='createButton'>Join/Create</button>
         </div>
     

@@ -50,7 +50,7 @@ class LoginSignup extends Component {
         <img src={logo} className="App-logo" alt="logo" />
         <label>
           <div className='form-wrapper cf'>
-            <input ref="username" className='usernameField' type="text" name='username' />
+            <input placeholder="Enter username..." ref="username" className='usernameField' type="text" name='username' />
             <button className='routeButton' id='joinButton' onClick={this.handleUsernameInput.bind(this)}>Login</button>
           </div>
         </label>
