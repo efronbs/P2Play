@@ -49,7 +49,6 @@ class LoginSignup extends Component {
       <div className="App">
         <img src={logo} className="App-logo" alt="logo" />
         <label>
-          Login/Signup
           <div>
             <input ref="username" className='usernameField' type="text" name='username' />
             <button className='routeButton' id='joinButton' onClick={this.handleUsernameInput.bind(this)}>Join</button>
