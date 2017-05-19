@@ -47,12 +47,12 @@ class CreatePlaylist extends React.Component {
   onPlayerReady(event) {
     var playButton = document.getElementById("play-button");
     playButton.addEventListener("click", function() {
-      player.playVideo();
+      this.player.playVideo();
     });
     
     var pauseButton = document.getElementById("pause-button");
     pauseButton.addEventListener("click", function() {
-      player.pauseVideo();
+      this.player.pauseVideo();
     });
   }
 
