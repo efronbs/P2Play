@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Config from './app-config.js';
-import PlayActions from './PlayActions'
+import PlayActions from './PlayActions';
+import logo from './logo.png';
 
 class LoginSignup extends Component {
 
@@ -47,6 +48,7 @@ class LoginSignup extends Component {
     return (
       <div className="App">
         <h1>P2Play</h1>
+        <img src={logo} className="App-logo" alt="logo" />
         <label>
           Login/Signup
           <div>
